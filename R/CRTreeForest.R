@@ -100,6 +100,7 @@ CRTreeForest <- function(training_data,
                          training_labels,
                          validation_labels,
                          folds,
+                         max_depth=20,
                          nthread = 1,
                          lr = 1,
                          training_start = NULL,
@@ -174,7 +175,7 @@ CRTreeForest <- function(training_data,
   
   # Loop through the forest
   for (i in 1:n_forest) {
-    
+    depth<-max_depth
     # Check for Random Forest
     if (i <= random_forest) {
       
@@ -188,14 +189,12 @@ CRTreeForest <- function(training_data,
     } else {
       
       # Setup parameters not for Random Forest
-      column_sampling_tree <- ceiling(sqrt(ncol(training_data)))
-      column_sampling_level <- 1/(column_sampling_tree)
-      row_sampling <- 1
+      column_sampling_tree <- 1
+      column_sampling_level <- 1/ ncol(training_data)
+      row_sampling <- 0.632
       
-      # Sample features
-      set.seed(seed + i)
-      features_used[[i]] <- sample(1:ncol(training_data), column_sampling_tree)
-      
+      features_used[[i]] <- 1:ncol(training_data)
+     depth<-depth*3 
     }
     
     # Are we doing multiclass?
@@ -245,7 +244,7 @@ CRTreeForest <- function(training_data,
         set.seed(seed + i)
         model[[i]][[j]] <- xgb.train(params = list(booster = "gbtree",
                                                    eta = lr,
-                                                   max_depth = 99999,
+                                                   max_depth = depth,
                                                    max_leaves = 99999,
                                                    colsample_bytree = 1,
                                                    colsample_bylevel = column_sampling_level,
@@ -294,7 +293,7 @@ CRTreeForest <- function(training_data,
         set.seed(seed + i)
         model[[i]][[j]] <- xgb.train(params = list(booster = "gbtree",
                                                    eta = lr,
-                                                   max_depth = 99999,
+                                                   max_depth = depth,
                                                    max_leaves = 99999,
                                                    colsample_bytree = 1,
                                                    colsample_bylevel = column_sampling_level,
