@@ -204,7 +204,7 @@ CascadeForest <- function(training_data,
                                  training_labels = training_labels,
                                  validation_labels = validation_labels,
                                  folds = folds,
-                                 max_depth=max_depth
+                                 max_depth=max_depth,
                                  nthread = nthread,
                                  lr = cascade_lr[i],
                                  training_start = training_start,
