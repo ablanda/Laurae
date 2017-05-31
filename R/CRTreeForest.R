@@ -303,7 +303,8 @@ CRTreeForest <- function(training_data,
                                      nthread = nthread,
                                      data = train_data,
                                      nrounds = 1,
-                                     verbose = 0,
+                                     verbose = 1,
+                                     eval_metric = "error",
                                      watchlist = list(test = validate_data),
                                      objective = objective)
         
