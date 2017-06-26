@@ -100,7 +100,6 @@ CRTreeForest <- function(training_data,
                          training_labels,
                          validation_labels,
                          folds,
-                         max_depth=20,
                          nthread = 1,
                          lr = 1,
                          training_start = NULL,
@@ -194,7 +193,6 @@ CRTreeForest <- function(training_data,
       row_sampling <- 0.632
       
       features_used[[i]] <- 1:ncol(training_data)
-     depth<-depth*3 
     }
     
     # Are we doing multiclass?
@@ -244,7 +242,7 @@ CRTreeForest <- function(training_data,
         set.seed(seed + i)
         model[[i]][[j]] <- xgb.train(params = list(booster = "gbtree",
                                                    eta = lr,
-                                                   max_depth = depth,
+                                                   max_depth = 99999,
                                                    max_leaves = 99999,
                                                    colsample_bytree = 1,
                                                    colsample_bylevel = column_sampling_level,
@@ -252,7 +250,6 @@ CRTreeForest <- function(training_data,
                                                    num_parallel_tree = n_trees),
                                      nthread = nthread,
                                      data = train_data,
-                                     eval_metric = "error",
                                      nrounds = 1,
                                      verbose = 1,
                                      watchlist = list(test = validate_data),
@@ -294,7 +291,7 @@ CRTreeForest <- function(training_data,
         set.seed(seed + i)
         model[[i]][[j]] <- xgb.train(params = list(booster = "gbtree",
                                                    eta = lr,
-                                                   max_depth = depth,
+                                                   max_depth = 99999,
                                                    max_leaves = 99999,
                                                    colsample_bytree = 1,
                                                    colsample_bylevel = column_sampling_level,
@@ -304,7 +301,6 @@ CRTreeForest <- function(training_data,
                                      data = train_data,
                                      nrounds = 1,
                                      verbose = 1,
-                                     eval_metric = "error",
                                      watchlist = list(test = validate_data),
                                      objective = objective)
         
