@@ -174,7 +174,6 @@ CRTreeForest <- function(training_data,
   
   # Loop through the forest
   for (i in 1:n_forest) {
-    depth<-max_depth
     # Check for Random Forest
     if (i <= random_forest) {
       
