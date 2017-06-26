@@ -180,7 +180,7 @@ CRTreeForest <- function(training_data,
       
       # Setup parameters for Random Forest
       column_sampling_tree <- 1
-      column_sampling_level <- floor(sqrt(ncol(training_data))/ncol(training_data)
+      column_sampling_level <- floor(sqrt(ncol(training_data)))/ncol(training_data)
       row_sampling <- 0.6321
       depth<-20
       features_used[[i]] <- 1:ncol(training_data)
