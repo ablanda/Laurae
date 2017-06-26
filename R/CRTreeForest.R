@@ -180,9 +180,9 @@ CRTreeForest <- function(training_data,
       
       # Setup parameters for Random Forest
       column_sampling_tree <- 1
-      column_sampling_level <- ceiling(sqrt(ncol(training_data))) / ncol(training_data)
-      row_sampling <- 0.632
-      
+      column_sampling_level <- floor(sqrt(ncol(training_data))/ncol(training_data)
+      row_sampling <- 0.6321
+      depth<-20
       features_used[[i]] <- 1:ncol(training_data)
       
     } else {
@@ -190,8 +190,8 @@ CRTreeForest <- function(training_data,
       # Setup parameters not for Random Forest
       column_sampling_tree <- 1
       column_sampling_level <- 1/ ncol(training_data)
-      row_sampling <- 0.632
-      
+      row_sampling <- 0.6321
+      depth<-20*3
       features_used[[i]] <- 1:ncol(training_data)
     }
     
@@ -242,13 +242,14 @@ CRTreeForest <- function(training_data,
         set.seed(seed + i)
         model[[i]][[j]] <- xgb.train(params = list(booster = "gbtree",
                                                    eta = lr,
-                                                   max_depth = 99999,
-                                                   max_leaves = 99999,
+                                                   max_depth = depth,
+                                                   max_leaves = depth,
                                                    colsample_bytree = 1,
                                                    colsample_bylevel = column_sampling_level,
                                                    subsample = row_sampling,
                                                    num_parallel_tree = n_trees),
                                      nthread = nthread,
+                                     eval_metric = "mlogloss",
                                      data = train_data,
                                      nrounds = 1,
                                      verbose = 1,
@@ -291,13 +292,14 @@ CRTreeForest <- function(training_data,
         set.seed(seed + i)
         model[[i]][[j]] <- xgb.train(params = list(booster = "gbtree",
                                                    eta = lr,
-                                                   max_depth = 99999,
-                                                   max_leaves = 99999,
+                                                   max_depth = depth,
+                                                   max_leaves = depth,
                                                    colsample_bytree = 1,
                                                    colsample_bylevel = column_sampling_level,
                                                    subsample = row_sampling,
                                                    num_parallel_tree = n_trees),
                                      nthread = nthread,
+                                     eval_metric = "logloss",
                                      data = train_data,
                                      nrounds = 1,
                                      verbose = 1,
