@@ -114,7 +114,15 @@ CRTreeForest <- function(training_data,
                          multi_class = 2,
                          verbose = " ",
                          garbage = FALSE,
-                         work_dir = NULL) {
+                         work_dir = NULL,
+                                      max_depth =6 ,
+                                                   max_leaves =0 ,
+                                                   colsample_bytree =1,
+                                                   colsample_bylevel = 1,
+                                                   subsample =1,
+                         nrounds,
+                                     early_stopping_rounds                                     
+                                     ) {
   
   model <- list()
   train_preds <- list()
@@ -187,11 +195,13 @@ CRTreeForest <- function(training_data,
     } else {
       
       # Setup parameters not for Random Forest
-      column_sampling_tree <- 1
+      column_sampling_tree <- ncol(training_data)
       column_sampling_level <- 1/ ncol(training_data)
       row_sampling <- 0.6321
       depth<-20*3
-      features_used[[i]] <- 1:ncol(training_data)
+       # Sample features
+      set.seed(seed + i)
+      features_used[[i]] <- sample(1:ncol(training_data), column_sampling_tree)
     }
     
     # Are we doing multiclass?
@@ -241,17 +251,17 @@ CRTreeForest <- function(training_data,
         set.seed(seed + i)
         model[[i]][[j]] <- xgb.train(params = list(booster = "gbtree",
                                                    eta = lr,
-                                                   max_depth = depth,
-                                                   max_leaves = depth,
-                                                   colsample_bytree = 1,
+                                                   max_depth = max_depth,
+                                                   max_leaves = max_leaves,
+                                                   colsample_bytree =colsample_bytree ,
                                                    colsample_bylevel = column_sampling_level,
-                                                   subsample = row_sampling,
+                                                   subsample = subsample,
                                                    num_parallel_tree = n_trees),
                                      nthread = nthread,
-                                     eval_metric = "mlogloss",
                                      data = train_data,
-                                     nrounds = 1,
-                                     verbose = 1,
+                                     nrounds = nrounds,
+                                     early_stopping_rounds=early_stopping_rounds,
+                                     verbose = 0,
                                      watchlist = list(test = validate_data),
                                      objective = objective,
                                      num_class = multi_class)
@@ -291,17 +301,17 @@ CRTreeForest <- function(training_data,
         set.seed(seed + i)
         model[[i]][[j]] <- xgb.train(params = list(booster = "gbtree",
                                                    eta = lr,
-                                                   max_depth = depth,
-                                                   max_leaves = depth,
-                                                   colsample_bytree = 1,
+                                                   max_depth = max_depth,
+                                                   max_leaves = max_leaves,
+                                                   colsample_bytree =colsample_bytree ,
                                                    colsample_bylevel = column_sampling_level,
-                                                   subsample = row_sampling,
+                                                   subsample = subsample,
                                                    num_parallel_tree = n_trees),
                                      nthread = nthread,
-                                     eval_metric = "logloss",
                                      data = train_data,
-                                     nrounds = 1,
-                                     verbose = 1,
+                                     nrounds = nrounds,
+                                     early_stopping_rounds=early_stopping_rounds,
+                                     verbose = 0,
                                      watchlist = list(test = validate_data),
                                      objective = objective)
         
