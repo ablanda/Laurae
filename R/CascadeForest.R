@@ -130,7 +130,15 @@ CascadeForest <- function(training_data,
                           essentials = FALSE,
                           garbage = FALSE,
                           work_dir = NULL,
-                          fail_safe = 65536) {
+                          fail_safe = 65536,
+                                        max_depth =6 ,
+                                                   max_leaves =0 ,
+                                                   colsample_bytree =1,
+                                                   colsample_bylevel = 1,
+                                                   subsample =1,
+                         nrounds,
+                                     early_stopping_rounds=NULL                                     
+) {
   
   model <- list()
   logger <- list()
@@ -217,7 +225,15 @@ CascadeForest <- function(training_data,
                                  multi_class = multi_class,
                                  verbose = ifelse(verbose == FALSE, "", paste0("Layer ", sprintf(paste0("%0", floor(log10(num_layers - (2 * cascade_infinite))) + 1, "d"), i), ", ")),
                                  garbage = garbage,
-                                 work_dir = if (out_of_memory) {paste0(work_dir, paste0("Layer", sprintf(paste0("%0", floor(log10(num_layers - (2 * cascade_infinite))) + 1, "d"), i), "_"))} else {NULL})
+                                 work_dir = if (out_of_memory) {paste0(work_dir, paste0("Layer", sprintf(paste0("%0", floor(log10(num_layers - (2 * cascade_infinite))) + 1, "d"), i), "_"))} else {NULL},
+   max_depth = max_depth,
+                                                   max_leaves = max_leaves,
+                                                   colsample_bytree =colsample_bytree ,
+                                                   colsample_bylevel = column_sampling_level,
+                                                   subsample = subsample,
+                                                  nrounds = nrounds,
+                                     early_stopping_rounds=early_stopping_rounds
+)
       
       logger[[i]] <- model[[i]]$logger[[2]]
       model_path[[i]] <- model[[i]]$work_dir
@@ -366,7 +382,15 @@ CascadeForest <- function(training_data,
                                  multi_class = multi_class,
                                  verbose = ifelse(verbose == FALSE, "", paste0("Layer ", sprintf(paste0("%0", floor(log10(num_layers - (2 * cascade_infinite))) + 1, "d"), i), ", ")),
                                  garbage = garbage,
-                                 work_dir = if (out_of_memory) {paste0(work_dir, paste0("Layer", sprintf(paste0("%0", floor(log10(num_layers - (2 * cascade_infinite))) + 1, "d"), i), "_"))} else {NULL})
+                                 work_dir = if (out_of_memory) {paste0(work_dir, paste0("Layer", sprintf(paste0("%0", floor(log10(num_layers - (2 * cascade_infinite))) + 1, "d"), i), "_"))} else {NULL},
+                                  max_depth = max_depth,
+                                                   max_leaves = max_leaves,
+                                                   colsample_bytree =colsample_bytree ,
+                                                   colsample_bylevel = column_sampling_level,
+                                                   subsample = subsample,
+                                                  nrounds = nrounds,
+                                     early_stopping_rounds=early_stopping_rounds
+)
       
       logger[[i]] <- model[[i]]$logger[[2]]
       model_path[[i]] <- model[[i]]$work_dir
