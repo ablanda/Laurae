@@ -121,7 +121,7 @@ CRTreeForest <- function(training_data,
                                                    colsample_bylevel = 1,
                                                    subsample =1,
                          nrounds,
-                                     early_stopping_rounds                                     
+                                     early_stopping_rounds=NULL                                     
                                      ) {
   
   model <- list()
