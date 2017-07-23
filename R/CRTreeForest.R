@@ -195,10 +195,13 @@ CRTreeForest <- function(training_data,
     } else {
       
       # Setup parameters not for Random Forest
-      column_sampling_tree <- ncol(training_data)
-      column_sampling_level <- 1/ ncol(training_data)
-      row_sampling <- 0.6321
-      depth<-20*3
+      colsample_bytree <-1
+      colsample_bylevel <- 1/ ncol(training_data)
+      subsample <- 0.6321
+      max_depth = 99999
+      max_leaves = 99999
+      nrounds<-1
+      n_trees = 200
        # Sample features
       set.seed(seed + i)
       features_used[[i]] <- sample(1:ncol(training_data), column_sampling_tree)
