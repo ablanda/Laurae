@@ -204,7 +204,7 @@ CRTreeForest <- function(training_data,
       n_trees = 200
        # Sample features
       set.seed(seed + i)
-      features_used[[i]] <- sample(1:ncol(training_data), column_sampling_tree)
+      features_used[[i]] <- sample(1:ncol(training_data), ncol(training_data)*column_sampling_tree)
     }
     
     # Are we doing multiclass?
