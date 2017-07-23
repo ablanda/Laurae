@@ -454,6 +454,7 @@ CascadeForest <- function(training_data,
         # Return to user
         return(list(model = model,
                     logger = logger,
+                    train_data=train_data,
                     train_means = train_means,
                     valid_means = valid_means,
                     multi_class = multi_class,
