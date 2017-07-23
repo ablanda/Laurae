@@ -137,7 +137,8 @@ CascadeForest <- function(training_data,
                                                    colsample_bylevel = 1,
                                                    subsample =1,
                          nrounds,
-                                     early_stopping_rounds=NULL                                     
+                                     early_stopping_rounds=NULL,
+                          column_sampling_cascade=1
 ) {
   
   model <- list()
@@ -232,7 +233,8 @@ CascadeForest <- function(training_data,
                                                    colsample_bylevel = colsample_bylevel,
                                                    subsample = subsample,
                                                   nrounds = nrounds,
-                                     early_stopping_rounds=early_stopping_rounds
+                                     early_stopping_rounds=early_stopping_rounds,
+                                 column_sampling_cascade=column_sampling_cascade
 )
       
       logger[[i]] <- model[[i]]$logger[[2]]
@@ -389,7 +391,8 @@ CascadeForest <- function(training_data,
                                                    colsample_bylevel = colsample_bylevel,
                                                    subsample = subsample,
                                                   nrounds = nrounds,
-                                     early_stopping_rounds=early_stopping_rounds
+                                     early_stopping_rounds=early_stopping_rounds,
+                                 column_sampling_cascade=column_sampling_cascade
 )
       
       logger[[i]] <- model[[i]]$logger[[2]]
