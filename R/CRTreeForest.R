@@ -179,6 +179,7 @@ CRTreeForest <- function(training_data,
     }
     
   }
+      feat_us <-sample(1:ncol(training_data), ncol(training_data)*column_sampling_cascade)
   
   # Loop through the forest
   for (i in 1:n_forest) {
@@ -190,8 +191,7 @@ CRTreeForest <- function(training_data,
       column_sampling_level <- floor(sqrt(ncol(training_data)))/ncol(training_data)
       row_sampling <- 0.6321
       depth<-20
-      features_used[[i]] <- 1:ncol(training_data)
-      
+      features_used[[i]]<-feat_us
     } else {
       
       # Setup parameters not for Random Forest
@@ -204,7 +204,7 @@ CRTreeForest <- function(training_data,
       n_trees = 200
        # Sample features
       set.seed(seed + i)
-      features_used[[i]] <- sample(1:ncol(training_data), ncol(training_data)*column_sampling_tree)
+      features_used[[i]] <- feat_us
     }
     
     # Are we doing multiclass?
